@@ -1,16 +1,14 @@
 import { Link, useParams } from 'react-router-dom';
-import useFetchPosts from '../hooks/useFetchPosts';
 import Spinner from '../components/Spinner';
 import { formatDistanceToNow } from 'date-fns';
+import usePostById from '../hooks/usePostById';
 
 function PostPage() {
     const { id } = useParams<{ id: string }>();
-    const { data: posts, isLoading, error } = useFetchPosts();
+    const { data: post, isLoading, error } = usePostById(id!);
 
     if (isLoading) return <Spinner />;
     if (error) return <p style={{ color: 'red' }}>{error.message}</p>;
-
-    const post = posts?.find((p) => p.id.toString() === id);
 
     if (!post) return <p>Post not found.</p>;
 

@@ -10,7 +10,7 @@ type FormData = {
     content: string;
 };
 
-function CreatePost() {
+function CreatePostPage() {
     const navigate = useNavigate();
 
     const {
@@ -66,4 +66,4 @@ function CreatePost() {
     );
 }
 
-export default CreatePost;
+export default CreatePostPage;

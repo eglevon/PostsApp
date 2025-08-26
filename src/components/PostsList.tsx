@@ -34,7 +34,7 @@ export function PostsList({ posts, loading, error }: PostsListProps) {
         );
 
     return (
-        <div className='flex flex-col gap-8'>
+        <div className='min-h-screen flex flex-col gap-8'>
             <div className='flex justify-center pt-6'>
                 <input type='text' placeholder='Search posts...' value={query} onChange={(e) => setQuery(e.target.value)} className='w-70 justify-self-center rounded-xl border border-gray-300 bg-white p-2 shadow-sm focus:border-purple-300 focus:ring focus:ring-purple-300' />
             </div>
@@ -64,7 +64,7 @@ export function PostsList({ posts, loading, error }: PostsListProps) {
                             </li>
                         ))
                 ) : (
-                    <p className='text-gray-500'>No posts match your search.</p>
+                    <p className='text-gray-500 pl-10'>No posts match your search.</p>
                 )}
             </ul>
         </div>

@@ -12,11 +12,12 @@ import AllPostsPage from './pages/AllPostsPage';
 import SignInPage from './pages/SignInPage';
 import PageNotFound from './pages/PageNotFound';
 import SignUpPage from './pages/SignUpPage';
-import CreatePost from './components/CreatePost';
+import CreatePostPage from './pages/CreatePostPage';
 import PostPage from './pages/PostPage';
 import MyPostsPage from './pages/MyPostsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserPostsPage from './pages/UserPostsPage';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
     useEffect(() => {
@@ -35,10 +36,9 @@ function App() {
 
     return (
         <BrowserRouter>
+            <ScrollToTop />
             <Header />
-
             <ToastContainer position='top-center' autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme='light' />
-
             <Routes>
                 <Route path='/' element={<Homepage />} />
                 <Route path='signin' element={<SignInPage />} />
@@ -50,7 +50,7 @@ function App() {
                         <Route path='posts/:id' element={<PostPage />} />
                         <Route path='myposts' element={<MyPostsPage />} />
                         <Route path='userposts/:authorId' element={<UserPostsPage />} />
-                        <Route path='create' element={<CreatePost />} />
+                        <Route path='create' element={<CreatePostPage />} />
                     </Route>
                 </Route>
                 <Route path='*' element={<PageNotFound />} />

@@ -12,7 +12,7 @@ export function useMyPosts() {
     const user = useAuthStore((state) => state.user);
 
     return useQuery<Post[], Error>({
-        queryKey: ['myPosts', user?.id],
+        queryKey: ['posts', user?.id],
         queryFn: async () => {
             if (!user?.id) throw new Error('User ID is required');
             return fetchMyPosts(user.id);
