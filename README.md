@@ -16,3 +16,21 @@ Posts App is a web application that allows users to sign in, browse posts, creat
 -   Authentication: Zustand for managing user authentication state.
 -   State Management and Data Fetching: React Query for server-state management, caching, and efficient API communication.
 -   Styling: TailwindCSS for styling the components.
+
+## Installation
+
+### Install dependencies
+
+`npm install`
+
+### Set up API URL
+
+-   Create a .env file in the root directory.
+-   Add API URL:
+    `VITE_API_URL=api_url_here`
+
+### Start the development server
+
+`npm run dev`
+
+-   Open your browser and navigate to http://localhost:5173/.
