@@ -69,6 +69,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
             persistAuth(user, accessToken, refreshToken);
             set({ accessToken, refreshToken, user, loading: false });
+            return true;
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
                 const axiosError = err as AxiosError<{ message?: string }>;
@@ -79,6 +80,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             } else {
                 set({ error: 'Signup failed', loading: false });
             }
+            return false;
         }
     },
 

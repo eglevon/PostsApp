@@ -16,6 +16,6 @@ export type AuthState = {
 
     refreshAccessToken: () => Promise<string | null>;
     signIn: (email: string, password: string) => Promise<void>;
-    signUp: (data: SignUpData) => Promise<void>;
+    signUp: (data: SignUpData) => Promise<boolean>;
     signOut: () => void;
 };

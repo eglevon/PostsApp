@@ -2,8 +2,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import type { Post } from '../types/Post';
 import { useAuthStore } from '../store/useAuthStore';
 import Spinner from './Spinner';
-import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
+import { useCallback, useMemo, useState } from 'react';
 
 type PostsListProps = {
     posts: Post[];
@@ -16,10 +16,31 @@ export function PostsList({ posts, loading, error }: PostsListProps) {
     const navigate = useNavigate();
     const [query, setQuery] = useState('');
 
-    const filteredPosts = posts.filter((post) => {
-        const q = query.toLowerCase();
-        return post.title.toLowerCase().includes(q) || post.content.toLowerCase().includes(q);
-    });
+    const processedPosts = useMemo(() => {
+        let result = posts;
+
+        if (query) {
+            const q = query.toLowerCase();
+            result = result.filter((post) => post.title.toLowerCase().includes(q) || post.content.toLowerCase().includes(q));
+        }
+
+        return [...result].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    }, [posts, query]);
+
+    const handlePostClick = useCallback(
+        (event: React.MouseEvent<HTMLLIElement>) => {
+            const postId = event.currentTarget.dataset.postId;
+
+            if (!postId) return;
+
+            if (user) {
+                navigate(`/app/posts/${postId}`);
+            } else {
+                navigate('/signin');
+            }
+        },
+        [user, navigate]
+    );
 
     if (loading) return <Spinner />;
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -40,29 +61,16 @@ export function PostsList({ posts, loading, error }: PostsListProps) {
             </div>
 
             <ul className='flex flex-col gap-4 p-6'>
-                {filteredPosts.length > 0 ? (
-                    filteredPosts
-                        .slice()
-                        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                        .map((post) => (
-                            <li
-                                key={post.id}
-                                onClick={() => {
-                                    if (user) {
-                                        navigate(`/app/posts/${post.id}`);
-                                    } else {
-                                        navigate('/signin');
-                                    }
-                                }}
-                                className='cursor-pointer w-full bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-0.5'
-                            >
-                                <h2 className='text-xl font-semibold mb-2'>{post.title}</h2>
-                                <p className='text-gray-800 line-clamp-3'>{post.content}</p>
-                                <div className='flex justify-end pt-4'>
-                                    <p className='text-sm text-gray-500'>Posted {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}</p>
-                                </div>
-                            </li>
-                        ))
+                {processedPosts.length > 0 ? (
+                    processedPosts.map((post) => (
+                        <li key={post.id} onClick={() => handlePostClick} data-post-id={post.id} className='cursor-pointer w-full bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-0.5'>
+                            <h2 className='text-xl font-semibold mb-2'>{post.title}</h2>
+                            <p className='text-gray-800 line-clamp-3'>{post.content}</p>
+                            <div className='flex justify-end pt-4'>
+                                <p className='text-sm text-gray-500'>Posted {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}</p>
+                            </div>
+                        </li>
+                    ))
                 ) : (
                     <p className='text-gray-500 pl-10'>No posts match your search.</p>
                 )}

@@ -17,10 +17,14 @@ function SignUpPage() {
     const error = useAuthStore((state) => state.error);
 
     const onSubmit = async (data: SignUpData) => {
-        await signUp(data);
+        const success = await signUp(data);
 
-        toast.success('You have registered successfully!');
-        navigate('/app');
+        if (success) {
+            toast.success('You have registered successfully!');
+            navigate('/app');
+        } else {
+            toast.error(error || 'Registration failed. Please try again.');
+        }
     };
 
     return (
